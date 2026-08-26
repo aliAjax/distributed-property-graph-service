@@ -22,6 +22,9 @@ func (s *Service) Upsert(ctx context.Context, g, id, typ string, props map[strin
 	if version < 1 {
 		version = 1
 	}
+	if props == nil {
+		props = map[string]any{}
+	}
 	v := Vertex{ID: id, GraphID: g, Type: typ, Properties: props, Version: version, CreatedAt: s.clock.Now()}
 	if old, err := s.repo.Get(ctx, g, id); err == nil {
 		v.CreatedAt = old.CreatedAt

@@ -12,11 +12,15 @@ type MergeConflict struct {
 }
 
 func MergeProperties(existing, incoming map[string]any) (map[string]any, []MergeConflict) {
-	out := existing
-	conflicts := []MergeConflict{}
+	// Build a fresh map so callers never receive the same backing map they
+	// passed in, and so a nil `existing` (e.g. a vertex/edge written without
+	// properties) does not panic on write. Both inputs may be nil: ranging over
+	// a nil map yields no entries and is safe.
+	out := make(map[string]any, len(existing)+len(incoming))
 	for k, v := range existing {
 		out[k] = v
 	}
+	conflicts := []MergeConflict{}
 	for k, v := range incoming {
 		if old, ok := out[k]; ok && fmt.Sprintf("%v", old) != fmt.Sprintf("%v", v) {
 			conflicts = append(conflicts, MergeConflict{Field: k, Existing: old, Incoming: v})

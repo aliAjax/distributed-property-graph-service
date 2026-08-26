@@ -24,6 +24,9 @@ func (s *Service) Upsert(ctx context.Context, g, id, typ, from, to string, props
 	if version < 1 {
 		version = 1
 	}
+	if props == nil {
+		props = map[string]any{}
+	}
 	e := Edge{ID: id, GraphID: g, Type: typ, FromID: from, ToID: to, Properties: props, Version: version, CreatedAt: s.clock.Now()}
 	if old, err := s.repo.Get(ctx, g, id); err == nil {
 		e.CreatedAt = old.CreatedAt

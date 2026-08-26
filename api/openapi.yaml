@@ -1,0 +1,9 @@
+openapi: 3.0.3
+info: {title: Distributed Property Graph, version: 1.0.0}
+paths:
+  /v1/graphs: {post: {responses: {'201': {description: created}}}}
+  /v1/queries: {post: {responses: {'200': {description: result}}}}
+  /v1/queries/{id}: {get: {responses: {'200': {description: stored result}}}}
+  /v1/graphs/{id}/imports: {post: {responses: {'202': {description: imported}}}}
+  /v1/graphs/{id}/mutations: {post: {responses: {'200': {description: committed}}}}
+  /v1/algorithms: {post: {responses: {'202': {description: accepted}}}}

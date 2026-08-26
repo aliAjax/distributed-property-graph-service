@@ -1,0 +1,6 @@
+syntax = "proto3";
+package graph.v1;
+option go_package = "github.com/example/distributed-property-graph/api/graphv1";
+service GraphService { rpc Query(QueryRequest) returns (QueryResponse); }
+message QueryRequest { string graph_id = 1; string start_vertex = 2; int32 depth = 3; }
+message QueryResponse { repeated string vertex_ids = 1; repeated string paths = 2; }

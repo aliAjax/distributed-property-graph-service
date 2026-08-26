@@ -17,6 +17,9 @@ func NewPropertyIndex() *PropertyIndex {
 	return &PropertyIndex{values: map[string]map[string]map[string]struct{}{}}
 }
 func (i *PropertyIndex) Put(_ context.Context, v vertex.Vertex) error {
+	if i == nil {
+		return nil
+	}
 	i.mu.Lock()
 	defer i.mu.Unlock()
 	for key, value := range v.Properties {
@@ -32,10 +35,18 @@ func (i *PropertyIndex) Put(_ context.Context, v vertex.Vertex) error {
 	return nil
 }
 func (i *PropertyIndex) Lookup(_ context.Context, g, typ, key string, value any) []string {
+	if i == nil {
+		return nil
+	}
 	i.mu.RLock()
 	defer i.mu.RUnlock()
-	ids := i.values[strings.ToLower(typ+":"+key+":"+toString(value))][g]
-	out := []string{}
+	token := strings.ToLower(typ + ":" + key + ":" + toString(value))
+	graph, ok := i.values[token]
+	if !ok {
+		return nil
+	}
+	ids := graph[g]
+	out := make([]string, 0, len(ids))
 	for id := range ids {
 		out = append(out, id)
 	}

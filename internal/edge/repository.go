@@ -23,7 +23,7 @@ func (r *MemoryRepository) Put(_ context.Context, e Edge) error {
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	if old, ok := r.values[e.GraphID+"/"+e.ID]; ok && old.Version >= e.Version {
-		return fmt.Errorf("edge put conflict: %v", platform.ErrConflict)
+		return fmt.Errorf("edge put conflict: %w", platform.ErrConflict)
 	}
 	r.values[e.GraphID+"/"+e.ID] = e
 	return nil
@@ -33,7 +33,7 @@ func (r *MemoryRepository) Get(_ context.Context, g, id string) (Edge, error) {
 	defer r.mu.RUnlock()
 	e, ok := r.values[g+"/"+id]
 	if !ok || e.Deleted {
-		return Edge{}, fmt.Errorf("edge %s: %v", id, platform.ErrNotFound)
+		return Edge{}, fmt.Errorf("edge %s: %w", id, platform.ErrNotFound)
 	}
 	return e, nil
 }

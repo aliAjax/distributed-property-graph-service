@@ -35,7 +35,7 @@ func (s *Service) Get(_ context.Context, id string) (Snapshot, error) {
 	defer s.mu.RUnlock()
 	v, ok := s.values[id]
 	if !ok {
-		return Snapshot{}, fmt.Errorf("snapshot %s: %v", id, platform.ErrNotFound)
+		return Snapshot{}, fmt.Errorf("snapshot %s: %w", id, platform.ErrNotFound)
 	}
 	if !time.Now().Before(v.ExpiresAt) {
 		return Snapshot{}, platform.ErrTimeout
@@ -46,7 +46,7 @@ func (s *Service) Delete(_ context.Context, id string) error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
 	if _, ok := s.values[id]; !ok {
-		return fmt.Errorf("snapshot: %v", platform.ErrNotFound)
+		return fmt.Errorf("snapshot: %w", platform.ErrNotFound)
 	}
 	delete(s.values, id)
 	return nil

@@ -33,7 +33,7 @@ func (r *MemoryRepository) Get(_ context.Context, g, id string) (Vertex, error) 
 	defer r.mu.RUnlock()
 	v, ok := r.values[g+"/"+id]
 	if !ok || v.Deleted {
-		return Vertex{}, fmt.Errorf("vertex %s: %v", id, platform.ErrNotFound)
+		return Vertex{}, fmt.Errorf("vertex %s: %w", id, platform.ErrNotFound)
 	}
 	return clone(v), nil
 }
@@ -42,7 +42,7 @@ func (r *MemoryRepository) Delete(_ context.Context, g, id string) error {
 	defer r.mu.Unlock()
 	v, ok := r.values[g+"/"+id]
 	if !ok {
-		return fmt.Errorf("vertex delete %s: %v", id, platform.ErrNotFound)
+		return fmt.Errorf("vertex delete %s: %w", id, platform.ErrNotFound)
 	}
 	v.Deleted = true
 	v.Version++

@@ -14,4 +14,24 @@ type Vertex struct {
 
 func (v Vertex) Property(name string) (any, bool) { value, ok := v.Properties[name]; return value, ok }
 
-func CloneVertices(values []Vertex) []Vertex { return values }
+func CloneVertex(v Vertex) Vertex {
+	if v.Properties != nil {
+		props := make(map[string]any, len(v.Properties))
+		for k, p := range v.Properties {
+			props[k] = p
+		}
+		v.Properties = props
+	}
+	return v
+}
+
+func CloneVertices(values []Vertex) []Vertex {
+	if values == nil {
+		return nil
+	}
+	out := make([]Vertex, len(values))
+	for i, v := range values {
+		out[i] = CloneVertex(v)
+	}
+	return out
+}

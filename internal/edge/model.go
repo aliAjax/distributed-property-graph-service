@@ -14,4 +14,24 @@ type Edge struct {
 	Deleted    bool           `json:"deleted"`
 }
 
-func CloneEdges(values []Edge) []Edge { return values }
+func CloneEdge(e Edge) Edge {
+	if e.Properties != nil {
+		props := make(map[string]any, len(e.Properties))
+		for k, p := range e.Properties {
+			props[k] = p
+		}
+		e.Properties = props
+	}
+	return e
+}
+
+func CloneEdges(values []Edge) []Edge {
+	if values == nil {
+		return nil
+	}
+	out := make([]Edge, len(values))
+	for i, e := range values {
+		out[i] = CloneEdge(e)
+	}
+	return out
+}

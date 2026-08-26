@@ -26,7 +26,7 @@ func Match(v Vertex, f Filter) bool {
 	return true
 }
 func FilterVertices(values []Vertex, f Filter) []Vertex {
-	out := values[:0]
+	out := make([]Vertex, 0, len(values))
 	for _, v := range values {
 		if Match(v, f) {
 			out = append(out, v)
@@ -34,7 +34,7 @@ func FilterVertices(values []Vertex, f Filter) []Vertex {
 	}
 	sort.Slice(out, func(i, j int) bool { return out[i].ID < out[j].ID })
 	if f.Limit > 0 && len(out) > f.Limit {
-		return out[:f.Limit]
+		out = out[:f.Limit]
 	}
 	return out
 }

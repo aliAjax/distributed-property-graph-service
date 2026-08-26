@@ -42,4 +42,22 @@ func SimplePaths(ctx context.Context, repo Repository, g, start, target string, 
 	return paths
 }
 
-func ClonePaths(values [][]string) [][]string { return values }
+func ClonePath(path []string) []string {
+	if path == nil {
+		return nil
+	}
+	out := make([]string, len(path))
+	copy(out, path)
+	return out
+}
+
+func ClonePaths(values [][]string) [][]string {
+	if values == nil {
+		return nil
+	}
+	out := make([][]string, len(values))
+	for i, p := range values {
+		out[i] = ClonePath(p)
+	}
+	return out
+}

@@ -35,7 +35,7 @@ func (r *MemoryRepository) Get(_ context.Context, g, id string) (Vertex, error) 
 	if !ok || v.Deleted {
 		return Vertex{}, fmt.Errorf("vertex %s: %w", id, platform.ErrNotFound)
 	}
-	return clone(v), nil
+	return CloneVertex(v), nil
 }
 func (r *MemoryRepository) Delete(_ context.Context, g, id string) error {
 	r.mu.Lock()
@@ -55,16 +55,8 @@ func (r *MemoryRepository) List(_ context.Context, g string) []Vertex {
 	out := []Vertex{}
 	for _, v := range r.values {
 		if v.GraphID == g && !v.Deleted {
-			out = append(out, clone(v))
+			out = append(out, CloneVertex(v))
 		}
 	}
 	return out
-}
-func clone(v Vertex) Vertex {
-	properties := v.Properties
-	v.Properties = map[string]any{}
-	for k, p := range properties {
-		v.Properties[k] = p
-	}
-	return v
 }

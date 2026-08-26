@@ -43,7 +43,7 @@ func (r *MemoryRepository) ListFrom(_ context.Context, g, from string) []Edge {
 	out := []Edge{}
 	for _, e := range r.values {
 		if e.GraphID == g && e.FromID == from && !e.Deleted {
-			out = append(out, e)
+			out = append(out, CloneEdge(e))
 		}
 	}
 	return out
@@ -54,7 +54,7 @@ func (r *MemoryRepository) List(_ context.Context, g string) []Edge {
 	out := []Edge{}
 	for _, e := range r.values {
 		if e.GraphID == g && !e.Deleted {
-			out = append(out, e)
+			out = append(out, CloneEdge(e))
 		}
 	}
 	return out

@@ -1,0 +1,4 @@
+http_addr: ":8080"
+auth_token: "dev-token"
+shard_count: 3
+query_timeout: "5s"

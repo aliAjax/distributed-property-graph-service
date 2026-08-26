@@ -1,0 +1,13 @@
+{
+  "project_intro": "基于 Go 实现的分布式属性图服务项目，一款后端服务，完成图、Schema、顶点、边、快照、查询与算法任务的分布式管理。",
+  "mode": "service",
+  "start": "go run ./cmd/server",
+  "workdir": ".",
+  "env": {
+    "HTTP_ADDR": "127.0.0.1:18080",
+    "AUTH_TOKEN": "dev-token"
+  },
+  "ready_url": "http://127.0.0.1:18080/healthz",
+  "ready_status": [200],
+  "startup_timeout": 20
+}
